@@ -1,1 +1,1 @@
-# try1ng.github.io
+pages
