@@ -1,14 +1,13 @@
 ---
 layout: page
-title: Bug Bounty
+title: bug bounty
 permalink: /bugbounty/
 ---
 
-## Targets & Status
 
 | Target        | Status   |
 |---------------|----------|
 | Appypie  | Duplicate |
 | Aven  | Duplicate |
 | Brightspeed | Duplicate |
-| Braze | Duplicate
+| Braze | Duplicate |
