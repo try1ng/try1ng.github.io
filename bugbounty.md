@@ -11,4 +11,5 @@ permalink: /bugbounty/
 | Aven  | Duplicate |
 | Brightspeed | Duplicate |
 | Braze | Duplicate |
+| Informatica | Duplicate |
 | Xsolla | Duplicate<br>Waiting |
