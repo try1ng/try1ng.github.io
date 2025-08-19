@@ -12,3 +12,4 @@ permalink: /bugbounty/
 | Brightspeed | Duplicate |
 | Braze | Duplicate |
 | Xsolla | Duplicate |
+| | Waiting |
