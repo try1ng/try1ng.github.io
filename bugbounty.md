@@ -12,4 +12,5 @@ permalink: /bugbounty/
 | Brightspeed | Duplicate |
 | Braze | Duplicate |
 | Informatica | Duplicate |
-| Xsolla | Duplicate<br>Waiting |
+| Xsolla | Duplicate<br>Duplicate |
+| Cloudways<br>by DigitalOcean | Duplicate<br>Duplicate|
