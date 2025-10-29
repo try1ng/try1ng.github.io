@@ -11,6 +11,6 @@ permalink: /bugbounty/
 | Aven  | Duplicate |
 | Brightspeed | Duplicate |
 | Braze | Duplicate |
-| Informatica | Duplicate |
+| Informatica | Duplicate |s
 | Xsolla | Duplicate<br>Duplicate |
-| Cloudways<br>by DigitalOcean | Duplicate<br>Duplicate|
+| Cloudways<br>by DigitalOcean | Duplicate<br>Duplicate<br>Duplicate|
