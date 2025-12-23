@@ -2,13 +2,19 @@
 <html>
 <body>
 <script>
-// Attempt to win race between location change and stop()
-function raceAttack() {
-    window.location = 'https://google.com';
-    window.stop(); // Try to cancel immediately
+// Try to push foreign origin into history
+function historyAttack() {
+    try {
+        // Should fail due to Same-Origin Policy
+        history.pushState({}, '', 'https://google.com');
+    } catch(e) {
+        // Expected error - cannot cross origins
+        console.log('Blocked:', e.message);
+    }
     
-    // Theory: If stop() wins, address bar shows google.com briefly
-    // Reality: Navigation usually wins or page breaks
+    // What actually works (same origin only):
+    history.pushState({}, 'Google', '/login/google/oauth');
+    // Shows: your-site.com/login/google/oauth
 }
 </script>
 </body>
