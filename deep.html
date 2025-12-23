@@ -2,62 +2,14 @@
 <html>
 <body>
 <script>
-// Log exact timing of navigation events
-const events = [];
-
-// Hook into navigation lifecycle
-window.addEventListener('beforeunload', () => {
-    events.push({event: 'beforeunload', time: performance.now()});
-});
-
-// Override location change to measure
-const originalLocation = window.location;
-const locationProxy = new Proxy(originalLocation, {
-    set(target, prop, value) {
-        if (prop === 'href') {
-            events.push({
-                event: 'location.set', 
-                time: performance.now(),
-                url: value
-            });
-            console.log('Starting navigation to:', value);
-        }
-        return Reflect.set(target, prop, value);
-    }
-});
-
-// Replace location (temporarily for testing)
-Object.defineProperty(window, 'location', {
-    value: locationProxy,
-    configurable: true
-});
-
-// Test function
-function testNavigation() {
-    console.clear();
-    events.length = 0;
+// Attempt to win race between location change and stop()
+function raceAttack() {
+    window.location = 'https://google.com';
+    window.stop(); // Try to cancel immediately
     
-    // Start navigation
-    window.location.href = 'https://httpbin.org/delay/1';
-    // This site adds 1 second delay, good for testing
-    
-    // Try to monitor if we can detect address bar update
-    let checkInterval = setInterval(() => {
-        console.log('Current URL:', document.location.href);
-        console.log('Events so far:', events);
-        
-        // If we're still on this page after 500ms, navigation was blocked
-        if (performance.now() > 500 && 
-            document.location.href.includes('httpbin') === false) {
-            clearInterval(checkInterval);
-            console.log('Navigation was blocked or cancelled');
-            console.log('Address bar might have flickered');
-        }
-    }, 50);
+    // Theory: If stop() wins, address bar shows google.com briefly
+    // Reality: Navigation usually wins or page breaks
 }
-
-// Run test
-testNavigation();
 </script>
 </body>
 </html>
