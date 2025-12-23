@@ -2,19 +2,19 @@
 <html>
 <body>
 <script>
-// Try to push foreign origin into history
-function historyAttack() {
-    try {
-        // Should fail due to Same-Origin Policy
-        history.pushState({}, '', 'https://google.com');
-    } catch(e) {
-        // Expected error - cannot cross origins
-        console.log('Blocked:', e.message);
-    }
+// Open real Google then refocus to fake page
+function windowAttack() {
+    const realGoogle = window.open('https://google.com', '_blank');
     
-    // What actually works (same origin only):
-    history.pushState({}, 'Google', '/login/google/oauth');
-    // Shows: your-site.com/login/google/oauth
+    // Quickly refocus to our window
+    setTimeout(() => {
+        window.focus();
+        // Show fake Google content
+        document.body.innerHTML = '<h1>Fake Google</h1>';
+        
+        // Theory: User sees real Google briefly
+        // Then sees fake but might think they're still there
+    }, 500);
 }
 </script>
 </body>
