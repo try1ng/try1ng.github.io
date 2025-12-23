@@ -1,101 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Address Bar API Test</title>
-    <style>
-        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
-        .demo { border: 2px solid #ccc; padding: 15px; margin: 20px 0; border-radius: 5px; }
-        .success { border-color: #4CAF50; background: #f0fff0; }
-        .fail { border-color: #f44336; background: #fff0f0; }
-        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
-        code { background: #eee; padding: 2px 5px; }
-    </style>
-</head>
-<body>
-    <h1>Web API Address Bar Spoofing Tests</h1>
-    <p>This demonstrates the absolute limits of what a webpage can do.</p>
+  <body>
+<script>
+// THEORETICAL UNPATCHED BEHAVIOR
+function launchSpoof() {
+    // STEP A: Force the address bar to update via a naive location.replace()
+    // Imagine an old bug where this updated the UI immediately...
+    window.location.replace('https://google.com');
 
-    <!-- TEST 1: history.pushState() -->
-    <div class="demo" id="test1">
-        <h3>Test 1: <code>history.pushState()</code> (The Main Tool)</h3>
-        <p>Click to change the URL in your address bar <strong>without reloading</strong>.</p>
-        <button onclick="testPushState()">Change URL to /trusted-path</button>
-        <p><strong>Result:</strong> The address bar will update to: <br>
-           <code id="result1"><?php echo $_SERVER['HTTP_HOST'] ?>/real-page.html</code>
-        </p>
-        <p class="fail">
-            <strong>✗ CRITICAL LIMIT (Same-Origin Policy):</strong><br>
-            You can <em>only</em> change the path (<code>/trusted-path</code>) on the <strong>current origin</strong> (<code><?php echo $_SERVER['HTTP_HOST'] ?></code>).<br>
-            It is <strong>IMPOSSIBLE</strong for this page to make the address bar show <code>https://google.com</code>.
-        </p>
-    </div>
+    // STEP B: INSTANTLY cancel the ensuing network request & page load
+    // before the browser can fetch Google's real page.
+    window.stop(); // Halts loading
 
-    <!-- TEST 2: window.location "Flash" -->
-    <div class="demo" id="test2">
-        <h3>Test 2: Rapid <code>window.location</code> Changes (The "Flash")</h3>
-        <p>Attempts to create a timing confusion.</p>
-        <button onclick="testLocationFlash()">Start Flash Test</button>
-        <p><strong>Observe:</strong> The URL may briefly change in the bar, but the page <strong>will navigate away</strong>. There is no stable spoof.</p>
-        <p class="fail">
-            <strong>✗ REASON:</strong> Setting <code>window.location</code> triggers a real navigation. You cannot stay on the malicious page while showing a different origin in the bar.
-        </p>
-    </div>
-
-    <!-- TEST 3: Opaque Origins (blob: & data:) -->
-    <div class="demo" id="test3">
-        <h3>Test 3: Obfuscation with <code>blob:</code> & <code>data:</code> URLs</h3>
-        <p>Hides the true server origin behind a complex browser-generated URL.</p>
-        <button onclick="testBlobUrl()">Navigate to a Blob URL</button>
-        <button onclick="testDataUrl()">Navigate to a Data URL</button>
-        <p><strong>Result:</strong> The address bar will show a long, confusing <code>blob:https://...</code> or <code>data:text/html,...</code> URL.</p>
-        <p class="fail">
-            <strong>✗ LIMITATION:</strong> This <em>hides</em> <code>evil-site.com</code> but does <strong>not show</strong> <code>your-bank.com</code>. It obfuscates, not spoofs.
-        </p>
-    </div>
-
-    <!-- KEY CONCLUSION -->
-    <div class="demo" style="border-color: #2196F3; background: #f0f8ff;">
-        <h3>🛡️ Core Security Principle Demonstrated</h3>
-        <p><strong>The address bar origin (protocol + domain) is under the browser's total control.</strong></p>
-        <p>A webpage's permissions are bounded by its <strong>origin</strong>. This is the <code>Same-Origin Policy (SOP)</code>, the fundamental security wall of the web.<br>
-        <strong>No standard Web API allows crossing this wall for address bar display.</strong></p>
-    </div>
-
-    <script>
-        // Get current origin for display
-        const currentOrigin = window.location.origin;
-        document.getElementById('result1').textContent = `${currentOrigin}/real-page.html`;
-
-        // TEST 1: pushState()
-        function testPushState() {
-            // This ONLY works on the current origin
-            const newUrl = currentOrigin + '/trusted-path#secure-login';
-            history.pushState({}, 'Trusted Page', '/trusted-path#secure-login');
-            document.getElementById('result1').textContent = newUrl;
-        }
-
-        // TEST 2: Location "Flash"
-        function testLocationFlash() {
-            alert("Watch the address bar closely. After you click OK, it will attempt to flash 'https://google.com' before navigating.");
-            // Try to set to google (will start navigation)
-            window.location = 'https://google.com';
-            // This line will NEVER run because navigation started above
-            setTimeout(() => { window.location = 'about:blank'; }, 10);
-        }
-
-        // TEST 3: Blob URL
-        function testBlobUrl() {
-            const blobContent = '<html><h1>Fake Page inside Blob</h1><p>Address bar is confusing, but not spoofed.</p></html>';
-            const blob = new Blob([blobContent], {type: 'text/html'});
-            const blobUrl = URL.createObjectURL(blob);
-            window.open(blobUrl, '_blank'); // Opens in new tab with blob: URL
-        }
-
-        // TEST 3b: Data URL
-        function testDataUrl() {
-            const dataUrl = 'data:text/html,<h1>Fake%20Page</h1><p>This%20is%20a%20data%20URL.</p>';
-            window.location = dataUrl; // Navigates current tab to data: URL
-        }
-    </script>
+    // STEP C: Our page (evil-site.com) never unloaded. We now have:
+    // - Address Bar: "https://google.com"
+    // - Page DOM: Still evil-site.com's content
+    // - JavaScript Context: Still running in evil-site.com's origin
+}
+</script>
 </body>
 </html>
