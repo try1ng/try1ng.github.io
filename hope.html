@@ -11,7 +11,7 @@
         // Inject content before navigation commits
         setTimeout(() => {
           try {
-            win.window.stop();
+            window.stop();
     win.document.write('This is not google');
     win.document.close();
           } catch (e) {
