@@ -1,39 +1,21 @@
-<!DOCTYPE html>
-<html>
-<body>
-<h2>Theoretical Web API Address Bar Attack Pattern</h2>
-<p>This demonstrates the fundamental theory behind Web API-based spoofing attempts.</p>
-
-<button onclick="runTheoreticalAttack()">Run Theoretical Attack</button>
-<div id="log" style="white-space: pre; font-family: monospace; background: #f5f5f5; padding: 10px; margin-top: 10px;"></div>
-
 <script>
-function runTheoreticalAttack() {
-    const log = document.getElementById('log');
-    log.textContent = '';
+// Test the navigation timing yourself
+let startTime;
+
+function testNavigationTiming() {
+    startTime = Date.now();
+    console.log('Starting navigation at:', startTime);
     
-    log.textContent += '=== THEORETICAL ATTACK PATTERN ===\n\n';
+    // Try to catch the exact moment address bar updates
+    window.onbeforeunload = function() {
+        const unloadTime = Date.now();
+        console.log('Page unloading after:', unloadTime - startTime, 'ms');
+    };
     
-    // THE CORE CONCEPT: Navigation + Instant Interruption
-    log.textContent += 'Step 1: Start navigation to trusted site\n';
-    log.textContent += '  window.location.replace("https://google.com");\n\n';
-    
-    log.textContent += 'Step 2: IMMEDIATELY interrupt navigation\n';
-    log.textContent += '  window.stop(); // Cancel loading\n\n';
-    
-    log.textContent += 'Step 3: Attempt to confuse browser state\n';
-    log.textContent += '  history.pushState({}, "", "/fake-google-path");\n\n';
-    
-    log.textContent += 'THEORETICAL OUTCOME:\n';
-    log.textContent += '- Address bar might briefly show "google.com"\n';
-    log.textContent += '- Page loading gets cancelled\n';
-    log.textContent += '- We hope browser keeps wrong URL displayed\n\n';
-    
-    log.textContent += 'REALITY:\n';
-    log.textContent += '- Browser shows loading state\n';
-    log.textContent += '- URL reverts or shows error\n';
-    log.textContent += '- No stable spoof possible\n';
+    // Start navigation
+    window.location = 'https://www.google.com';
 }
+
+// Run test
+testNavigationTiming();
 </script>
-</body>
-</html>
