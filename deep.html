@@ -2,22 +2,20 @@
 <html>
   <body>
 <script>
-// THEORETICAL UNPATCHED BEHAVIOR
-function launchSpoof() {
-    // STEP A: Force the address bar to update via a naive location.replace()
-    // Imagine an old bug where this updated the UI immediately...
-    window.location.replace('https://google.com');
+function corruptHistoryState() {
+    // Imagine a bug where pushState's origin check could be bypassed.
+    // This would push a foreign origin into OUR tab's history.
+    history.pushState(
+        { page: "fakeGoogle" }, 
+        "Google", 
+        "https://google.com"
+    );
 
-    // STEP B: INSTANTLY cancel the ensuing network request & page load
-    // before the browser can fetch Google's real page.
-    window.stop(); // Halts loading
-
-    // STEP C: Our page (evil-site.com) never unloaded. We now have:
-    // - Address Bar: "https://google.com"
-    // - Page DOM: Still evil-site.com's content
-    // - JavaScript Context: Still running in evil-site.com's origin
+    // Now, theoretically, the address bar shows google.com.
+    // But the document.origin is still evil-site.com.
+    // Any relative resource requests (XHR, images) would go to google.com,
+    // but our script context remains to manipulate the DOM.
 }
 </script>
-<button onclick="launchSpoof()">Theoretical Spoof</button>
 </body>
 </html>
