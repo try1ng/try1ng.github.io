@@ -1,0 +1,8 @@
+<button id="btn">Click</button>
+
+<script>
+  document.getElementById('btn').onmouseup = _ => {
+    let fs = showOpenFilePicker();
+    open('https://www.google.com');
+  };
+</script>
