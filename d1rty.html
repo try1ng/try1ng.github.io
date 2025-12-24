@@ -1,8 +1,46 @@
-<button id="btn">Click</button>
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Permission demo</h2>
+
+<button id="camBtn">Request camera</button>
+<button id="micBtn">Request microphone</button>
+<button id="screenBtn">Request screen capture</button>
+
+<video id="video" autoplay playsinline style="width:300px;border:1px solid #ccc;"></video>
 
 <script>
-  document.getElementById('btn').onmouseup = _ => {
-    let fs = showOpenFilePicker();
-    open('https://www.google.com');
-  };
+const video = document.getElementById("video");
+
+document.getElementById("camBtn").onclick = async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    video.srcObject = stream;
+    console.log("Camera granted");
+  } catch (e) {
+    console.log("Camera denied or failed:", e.name);
+  }
+};
+
+document.getElementById("micBtn").onclick = async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    console.log("Microphone granted");
+    // no playback to avoid feedback
+  } catch (e) {
+    console.log("Microphone denied or failed:", e.name);
+  }
+};
+
+document.getElementById("screenBtn").onclick = async () => {
+  try {
+    const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+    video.srcObject = stream;
+    console.log("Screen capture granted");
+  } catch (e) {
+    console.log("Screen capture denied or failed:", e.name);
+  }
+};
 </script>
+</body>
+</html>
