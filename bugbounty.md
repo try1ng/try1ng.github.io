@@ -13,4 +13,4 @@ permalink: /bugbounty/
 | Braze | Duplicate |
 | Informatica | Duplicate |
 | Xsolla | Duplicate<br>Duplicate |
-| Cloudways<br>by DigitalOcean | Duplicate<br>Duplicate<br>Duplicate|
+| Cloudways<br>by DigitalOcean | Duplicate<br>Duplicate<br>Duplicate<br>Duplicate|
