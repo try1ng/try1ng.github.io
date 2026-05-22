@@ -1,0 +1,28 @@
+<!doctype html>
+  <html>
+  <head>
+    <title>HTML_TITLE_CANARY</title>
+    <meta property="og:title" content="OG_TITLE_CANARY">
+    <meta property="og:description" content="OG_DESC_CANARY">
+  </head>
+  </body>
+  </html>
+
+  Send the URL in WhatsApp.
+
+  If WhatsApp preview shows:
+
+  OG_TITLE_CANARY
+
+  normal behavior.
+
+  Then test broken/no metadata:
+
+  <!doctype html>
+  <html>
+  <head></head>
+  <body>
+  <script>var SCRIPT_TEXT_CANARY = "SHOULD_NOT_BE_TITLE";</script>
+  BODY_TEXT_CANARY
+  </body>
+  </html>
